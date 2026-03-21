@@ -35,10 +35,8 @@
 
     /* HERO */
     .hero {
-      background: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)),
-                  url("logo.png") center/contain no-repeat,
-                  #1C1F2A;
-      min-height: 65vh;
+      background: #1C1F2A;
+      min-height: 60vh;
       color: white;
       display: flex;
       flex-direction: column;
@@ -78,7 +76,6 @@
       text-align: center;
     }
 
-    /* SECTIONS */
     section {
       padding: 60px 20px;
       max-width: 1100px;
@@ -99,10 +96,14 @@
     }
 
     .show-card {
+      position: relative;
       background: white;
       padding: 24px;
       border-radius: 16px;
       box-shadow: 0 8px 25px rgba(0,0,0,.1);
+      text-decoration: none;
+      color: #222;
+      overflow: hidden;
       transition: transform .2s;
     }
 
@@ -112,16 +113,30 @@
 
     .live {
       color: red;
-      font-weight: bold;
       font-size: 13px;
+      font-weight: bold;
     }
 
-    /* SCHEDULE */
-    .schedule {
-      background: #1C1F2A;
-      color: white;
-      border-radius: 16px;
-      padding: 30px;
+    .show-desc {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #555;
+      opacity: 0;
+      max-height: 0;
+      transition: all 0.3s ease;
+    }
+
+    .show-card:hover .show-desc {
+      opacity: 1;
+      max-height: 200px;
+    }
+
+    /* Show description always visible on mobile */
+    @media (max-width: 700px) {
+      .show-desc {
+        opacity: 1;
+        max-height: none;
+      }
     }
 
     /* COMMENTS */
@@ -151,10 +166,9 @@
       border-radius: 20px;
     }
 
-    /* COMMENTS LIST */
     .comment {
       margin-top: 12px;
-      padding: 10px;
+      padding: 10px 0;
       border-bottom: 1px solid #eee;
     }
 
@@ -187,15 +201,6 @@
       padding: 25px;
       margin-bottom: 60px;
     }
-
-    @media (max-width: 600px) {
-      header {
-        flex-direction: column;
-      }
-      header nav {
-        margin-top: 10px;
-      }
-    }
   </style>
 </head>
 
@@ -206,46 +211,44 @@
   <nav>
     #listenListen</a>
     #showsShows</a>
-    #scheduleSchedule</a>
-    #communityCommunity</a>
+    <a href="#community">Community</a>
   </nav>
 </header>
 
 <div class="hero">
   <h1>PanAfrica Connect Radio</h1>
   <p>Unity • Harmony • Cultural Exchange</p>
-  #listenListen Live</a>
+  <a href="#listen">Listen Live</a>
 </div>
 
 <div id="listen" class="player">
   <h2>LIVE ON AIR</h2>
   <audio controls style="width:100%">
-    https://a10.asurahosting.com:8530/radio.mp3
+    <source src="https://a10.asurahosting.com:8530/radio.mp3" type="audio/mpeg">
   </audio>
 </div>
 
 <section id="shows">
   <h2>Our Shows</h2>
   <div class="shows-grid">
-    <div class="show-card">
+
+    <a class="show-card" href="#">
       <span class="live">🔴 LIVE NOW</span>
       <h3>Africa in Celebration</h3>
-      <p>Culture, heritage & joy</p>
-    </div>
+      <div class="show-desc">
+        A joyful exploration of African cultures, traditions, music,
+        and the ways communities celebrate life across the continent.
+      </div>
+    </a>
 
-    <div class="show-card">
+    <a class="show-card" href="#">
       <h3>Voices from the Ground</h3>
-      <p>Grassroots community dialogue</p>
-    </div>
-  </div>
-</section>
+      <div class="show-desc">
+        Grassroots conversations amplifying community voices,
+        lived experience, and social realities often unheard.
+      </div>
+    </a>
 
-<section id="schedule">
-  <h2>Weekly Schedule</h2>
-  <div class="schedule">
-    <p><strong>Monday – Friday</strong></p>
-    <p>18:00 – Africa in Celebration</p>
-    <p>20:00 – Voices from the Ground</p>
   </div>
 </section>
 
@@ -267,11 +270,12 @@
   <button id="togglePlay">▶</button>
   <span>LIVE – PAC Radio</span>
   <audio id="radioAudio">
-    https://a10.asurahosting.com:8530/radio.mp3
+    <source src="https://a10.asurahosting.com:8530/radio.mp3" type="audio/mpeg">
   </audio>
 </div>
 
 <script>
+  /* Sticky Player */
   const audio = document.getElementById("radioAudio");
   const toggle = document.getElementById("togglePlay");
 
@@ -285,9 +289,10 @@
     }
   };
 
+  /* Auto‑refreshing comments */
   function addComment() {
-    const name = document.getElementById("name").value;
-    const msg = document.getElementById("comment").value;
+    const name = document.getElementById("name").value.trim();
+    const msg = document.getElementById("comment").value.trim();
     if (!name || !msg) return;
 
     const div = document.createElement("div");
