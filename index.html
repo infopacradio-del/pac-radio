@@ -13,14 +13,30 @@
       color: #3A3A3A;
     }
 
+    /* HEADER */
     header {
       background: #1C1F2A;
       color: #F0B429;
       padding: 16px;
       font-weight: bold;
       letter-spacing: 2px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
+    header .logo {
+      font-size: 18px;
+    }
+
+    header nav a {
+      color: #F0B429;
+      margin-left: 16px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    /* HERO */
     .hero {
       background: #1C1F2A;
       min-height: 70vh;
@@ -52,6 +68,7 @@
       border-radius: 6px;
     }
 
+    /* PLAYER */
     .player {
       background: white;
       max-width: 600px;
@@ -62,6 +79,7 @@
       text-align: center;
     }
 
+    /* SECTIONS */
     section {
       max-width: 800px;
       margin: auto;
@@ -69,6 +87,7 @@
       text-align: center;
     }
 
+    /* FOOTER */
     footer {
       background: #1C1F2A;
       color: #ccc;
@@ -76,9 +95,18 @@
       text-align: center;
     }
 
+    /* MOBILE */
     @media (max-width: 600px) {
       .hero img {
         max-width: 180px;
+      }
+
+      header {
+        flex-direction: column;
+      }
+
+      header nav {
+        margin-top: 10px;
       }
     }
   </style>
@@ -86,36 +114,69 @@
 
 <body>
 
-<header>PAC RADIO</header>
+  <!-- HEADER -->
+  <header>
+    <div class="logo">PAC RADIO</div>
+    <nav>
+      <a href="#listen">Listen</aowsShows</a>
+      #aboutAbout</a>
+    </nav>
+  </header>
 
-<div class="hero">
-  <img src="logo.png" alt="PAC Radio Logo">
-  <h1>PanAfrica Connect Radio</h1>
-  <p>Unity, Harmony &amp; Cultural Exchange</p>
-  <a href="#listen">Listen Live</a>
-</div>
+  <!-- HERO -->
+  <div class="hero">
+    <img src="logo.png" alt="PAC Radio Logo">
+    <h1>PanAfrica Connect Radio</h1>
+    <p>Unity, Harmony &amp; Cultural Exchange</p>
+    <a href="#listen">Listen Live</a>
+  </div>
 
-<div id="listen" class="player">
-  <h2>Live on Air</h2>
+  <!-- PLAYER -->
+  <div id="listen" class="player">
+    <h2>Live on Air</h2>
+    <audio controls preload="none" style="width:100%">
+      <source src="https://a10.asurahosting.com:8530/radio.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
 
-  <audio controls preload="none" style="width:100%">
-    <source src="https://a10.asurahosting.com:8530/radio.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
-</div>
+  <!-- SHOWS -->
+  <section id="shows">
+    <h2>Our Shows</h2>
 
-<section>
-  <h2>About Us</h2>
-  <p>
-    PanAfrica Connect Radio is a community‑driven platform dedicated to promoting
-    African unity, cultural exchange, and conscious dialogue across the continent
-    and the diaspora.
-  </p>
-</section>
+    <p>
+      <strong>Africa in Celebration</strong><br>
+      Culture, heritage &amp; joy
+    </p>
 
-<footer>
-  © PanAfrica Connect Radio
-</footer>
+    <p>
+      <strong>Voices from the Ground</strong><br>
+      Grassroots community dialogue
+    </p>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <h2>About Us</h2>
+    <p>
+      PanAfrica Connect Radio is a community‑driven platform dedicated to promoting
+      African unity, cultural exchange, and conscious dialogue across the continent
+      and the diaspora.
+    </p>
+  </section>
+
+  <!-- COMMUNITY -->
+  <section>
+    <h2>Community Interaction</h2>
+    <p>
+      Live listener comments will appear here during broadcasts.
+    </p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    © PanAfrica Connect Radio
+  </footer>
 
 </body>
 </html>
