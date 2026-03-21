@@ -18,15 +18,9 @@
       background: #1C1F2A;
       color: #F0B429;
       padding: 16px;
-      font-weight: bold;
-      letter-spacing: 2px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-
-    header .logo {
-      font-size: 18px;
     }
 
     header nav a {
@@ -50,7 +44,7 @@
     }
 
     .hero img {
-      max-width: 280px;
+      max-width: 260px;
       margin-bottom: 24px;
     }
 
@@ -79,7 +73,6 @@
       text-align: center;
     }
 
-    /* SECTIONS */
     section {
       max-width: 800px;
       margin: auto;
@@ -93,20 +86,43 @@
       color: #ccc;
       padding: 24px;
       text-align: center;
+      margin-bottom: 60px;
+    }
+
+    /* STICKY PLAYER */
+    #sticky-player {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1C1F2A;
+      color: white;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 1000;
+    }
+
+    #sticky-player button {
+      background: #F0B429;
+      border: none;
+      padding: 8px 14px;
+      font-size: 16px;
+      cursor: pointer;
     }
 
     /* MOBILE */
     @media (max-width: 600px) {
-      .hero img {
-        max-width: 180px;
-      }
-
       header {
         flex-direction: column;
       }
 
       header nav {
         margin-top: 10px;
+      }
+
+      .hero img {
+        max-width: 180px;
       }
     }
   </style>
@@ -118,7 +134,8 @@
   <header>
     <div class="logo">PAC RADIO</div>
     <nav>
-      <a href="#listen">Listen</aowsShows</a>
+      <a href="#listen">Listen</a>
+sShows</a>
       #aboutAbout</a>
     </nav>
   </header>
@@ -131,7 +148,7 @@
     <a href="#listen">Listen Live</a>
   </div>
 
-  <!-- PLAYER -->
+  <!-- MAIN PLAYER -->
   <div id="listen" class="player">
     <h2>Live on Air</h2>
     <audio controls preload="none" style="width:100%">
@@ -169,7 +186,7 @@
   <section>
     <h2>Community Interaction</h2>
     <p>
-      Live listener comments will appear here during broadcasts.
+      Live listener comments and discussions will be enabled during broadcasts.
     </p>
   </section>
 
@@ -177,6 +194,31 @@
   <footer>
     © PanAfrica Connect Radio
   </footer>
+
+  <!-- STICKY PLAYER -->
+  <div id="sticky-player">
+    <button id="togglePlay">▶</button>
+    <span>LIVE – PAC Radio</span>
+    <audio id="radioAudio">
+      <source src="https://a10.asurahosting.com:8530/radio.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    const audio = document.getElementById("radioAudio");
+    const toggle = document.getElementById("togglePlay");
+
+    toggle.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play();
+        toggle.textContent = "⏸";
+      } else {
+        audio.pause();
+        toggle.textContent = "▶";
+      }
+    });
+  </script>
 
 </body>
 </html>
