@@ -13,7 +13,6 @@
       color: #222;
     }
 
-    /* HEADER */
     header {
       background: #1C1F2A;
       color: #F0B429;
@@ -33,7 +32,6 @@
       font-size: 14px;
     }
 
-    /* HERO */
     .hero {
       background: #1C1F2A;
       min-height: 60vh;
@@ -46,16 +44,6 @@
       padding: 40px 20px;
     }
 
-    .hero h1 {
-      font-size: 2.2rem;
-      margin-bottom: 10px;
-    }
-
-    .hero p {
-      opacity: 0.85;
-      margin-bottom: 25px;
-    }
-
     .hero a {
       background: #F0B429;
       color: #000;
@@ -65,7 +53,6 @@
       border-radius: 30px;
     }
 
-    /* PLAYER */
     .player {
       background: white;
       max-width: 600px;
@@ -82,13 +69,6 @@
       margin: auto;
     }
 
-    section h2 {
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 1.8rem;
-    }
-
-    /* SHOW CARDS */
     .shows-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -96,50 +76,14 @@
     }
 
     .show-card {
-      position: relative;
       background: white;
       padding: 24px;
       border-radius: 16px;
       box-shadow: 0 8px 25px rgba(0,0,0,.1);
       text-decoration: none;
       color: #222;
-      overflow: hidden;
-      transition: transform .2s;
     }
 
-    .show-card:hover {
-      transform: translateY(-4px);
-    }
-
-    .live {
-      color: red;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    .show-desc {
-      margin-top: 12px;
-      font-size: 14px;
-      color: #555;
-      opacity: 0;
-      max-height: 0;
-      transition: all 0.3s ease;
-    }
-
-    .show-card:hover .show-desc {
-      opacity: 1;
-      max-height: 200px;
-    }
-
-    /* Show description always visible on mobile */
-    @media (max-width: 700px) {
-      .show-desc {
-        opacity: 1;
-        max-height: none;
-      }
-    }
-
-    /* COMMENTS */
     .comments {
       background: white;
       border-radius: 16px;
@@ -147,32 +91,12 @@
       box-shadow: 0 10px 30px rgba(0,0,0,.1);
     }
 
-    .comments input,
-    .comments textarea {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 12px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-    }
-
-    .comments button {
-      background: #F0B429;
-      border: none;
-      padding: 12px 20px;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 20px;
-    }
-
     .comment {
       margin-top: 12px;
-      padding: 10px 0;
+      padding-bottom: 10px;
       border-bottom: 1px solid #eee;
     }
 
-    /* STICKY PLAYER */
     #sticky-player {
       position: fixed;
       bottom: 0;
@@ -181,86 +105,19 @@
       color: white;
       padding: 12px 16px;
       display: flex;
-      align-items: center;
       gap: 12px;
       z-index: 1000;
     }
-
-    #sticky-player button {
-      background: #F0B429;
-      border: none;
-      padding: 8px 14px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    footer {
-      background: #1C1F2A;
-      color: #aaa;
-      text-align: center;
-      padding: 25px;
-      margin-bottom: 60px;
-    }
   </style>
 </head>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDkOfitOyXzftyriVlWIplzrMH4FPyCYw0",
-    authDomain: "pac-radio-d838c.firebaseapp.com",
-    databaseURL: "https://pac-radio-d838c-default-rtdb.firebaseio.com",
-    projectId: "pac-radio-d838c",
-    storageBucket: "pac-radio-d838c.appspot.com",
-    messagingSenderId: "199462097770",
-    appId: "1:199462097770:web:5281db835205b64d518b13"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-
-  // --- REAL‑TIME COMMENTS ---
-  const commentsRef = ref(db, "comments/general");
-
-  const form = document.getElementById("comment-form");
-  const list = document.getElementById("comment-list");
-
-  if (form) {
-    form.addEventListener("submit", e => {
-      e.preventDefault();
-
-      const name = document.getElementById("name").value;
-      const comment = document.getElementById("comment").value;
-
-      if (!name || !comment) return;
-
-      push(commentsRef, {
-        name,
-        comment,
-        time: Date.now()
-      });
-
-      document.getElementById("comment").value = "";
-    });
-
-    onChildAdded(commentsRef, snap => {
-      const data = snap.val();
-      const div = document.createElement("div");
-      div.className = "comment";
-      div.innerHTML = `<strong>${data.name}</strong>: ${data.comment}`;
-      list.prepend(div);
-    });
-  }
-</script>
-``
 <body>
 
 <header>
   <strong>PAC RADIO</strong>
   <nav>
-    #listenListen</a>
-    #showsShows</a>
+    <a href="#listen">Listen</a>
+    <a href="#shows">Shows</a>
     <a href="#community">Community</a>
   </nav>
 </header>
@@ -281,40 +138,30 @@
 <section id="shows">
   <h2>Our Shows</h2>
   <div class="shows-grid">
-
-    <a class="show-card" href="#">
-      <span class="live">🔴 LIVE NOW</span>
+    <a href="#" class="show-card">
       <h3>Africa in Celebration</h3>
-      <div class="show-desc">
-        A joyful exploration of African cultures, traditions, music,
-        and the ways communities celebrate life across the continent.
-      </div>
+      <p>Culture, tradition, and joy.</p>
     </a>
-
-    <a class="show-card" href="#">
+    <a href="#" class="show-card">
       <h3>Voices from the Ground</h3>
-      <div class="show-desc">
-        Grassroots conversations amplifying community voices,
-        lived experience, and social realities often unheard.
-      </div>
+      <p>Grassroots community voices.</p>
     </a>
-
   </div>
 </section>
 
 <section id="community">
   <h2>Live Listener Comments</h2>
   <div class="comments">
-    <input id="name" placeholder="Your name">
-    <textarea id="comment" placeholder="Your message"></textarea>
-    <button onclick="addComment()">Send</button>
+    <form id="comment-form">
+      <input id="name" placeholder="Your name" required>
+      <textarea id="comment" placeholder="Your message" required></textarea>
+      <button type="submit">Send</button>
+    </form>
     <div id="comment-list"></div>
   </div>
 </section>
 
-<footer>
-  © PanAfrica Connect Radio
-</footer>
+<footer>© PanAfrica Connect Radio</footer>
 
 <div id="sticky-player">
   <button id="togglePlay">▶</button>
@@ -325,33 +172,50 @@
 </div>
 
 <script>
-  /* Sticky Player */
   const audio = document.getElementById("radioAudio");
   const toggle = document.getElementById("togglePlay");
+  toggle.onclick = () => audio.paused ? audio.play() : audio.pause();
+</script>
 
-  toggle.onclick = () => {
-    if (audio.paused) {
-      audio.play();
-      toggle.textContent = "⏸";
-    } else {
-      audio.pause();
-      toggle.textContent = "▶";
-    }
+<!-- FIREBASE -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDkOfitOyXzftyriVlWIplzrMH4FPyCYw0",
+    authDomain: "pac-radio-d838c.firebaseapp.com",
+    databaseURL: "https://pac-radio-d838c-default-rtdb.firebaseio.com",
+    projectId: "pac-radio-d838c",
+    messagingSenderId: "199462097770",
+    appId: "1:199462097770:web:5281db835205b64d518b13"
   };
 
-  /* Auto‑refreshing comments */
-  function addComment() {
-    const name = document.getElementById("name").value.trim();
-    const msg = document.getElementById("comment").value.trim();
-    if (!name || !msg) return;
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
 
+  const commentsRef = ref(db, "comments/home");
+
+  const form = document.getElementById("comment-form");
+  const list = document.getElementById("comment-list");
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    push(commentsRef, {
+      name: name.value,
+      text: comment.value,
+      time: Date.now()
+    });
+    comment.value = "";
+  });
+
+  onChildAdded(commentsRef, snap => {
+    const c = snap.val();
     const div = document.createElement("div");
     div.className = "comment";
-    div.innerHTML = `<strong>${name}</strong>: ${msg}`;
-
-    document.getElementById("comment-list").prepend(div);
-    document.getElementById("comment").value = "";
-  }
+    div.innerHTML = `<strong>${c.name}</strong>: ${c.text}`;
+    list.prepend(div);
+  });
 </script>
 
 </body>
