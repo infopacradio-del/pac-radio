@@ -5,21 +5,18 @@
   <title>PAC Radio – Host Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
+<body style="font-family:Arial,sans-serif;padding:30px;">
 
-<body style="font-family:Arial, sans-serif; padding:30px;">
+<h1>Host Login</h1>
+<p>For PAC Radio hosts & moderators only.</p>
 
-  <h1>Host Login</h1>
-  <p>For PAC Radio hosts & moderators only.</p>
+<input id="email" type="email" placeholder="Email"
+       style="display:block;margin-bottom:10px;width:320px;">
+<input id="password" type="password" placeholder="Password"
+       style="display:block;margin-bottom:10px;width:320px;">
+<button id="loginBtn">Login</button>
 
-  <input id="email" type="email" placeholder="Email"
-         style="display:block; margin-bottom:10px; width:100%; max-width:320px;">
-
-  <input id="password" type="password" placeholder="Password"
-         style="display:block; margin-bottom:10px; width:100%; max-width:320px;">
-
-  <button onclick="login()" style="padding:8px 16px;">Login</button>
-
-  <p id="status" style="margin-top:15px;"></p>
+<p id="status"></p>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
@@ -38,14 +35,15 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  // ✅ FORCE LOGIN TO PERSIST ACROSS PAGES
+  // IMPORTANT: persist auth
   await setPersistence(auth, browserLocalPersistence);
 
-  window.login = () => {
+  document.getElementById("loginBtn").onclick = () => {
     signInWithEmailAndPassword(auth, email.value, password.value)
       .then(() => {
-        status.style.color = "green";
-        status.textContent = "Login successful. Open the show page in a new tab.";
+        // ✅ FORCE SAME-TAB REDIRECT
+        window.location.href =
+          "/pac-radio/shows/your-rights.html";
       })
       .catch(err => {
         status.style.color = "red";
@@ -56,3 +54,4 @@
 
 </body>
 </html>
+``
