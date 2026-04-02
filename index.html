@@ -28,6 +28,7 @@
       color: #F0B429;
       margin-left: 18px;
       text-decoration: none;
+      font-weight: bold;
     }
 
     .hero {
@@ -71,19 +72,9 @@
     .featured {
       background: white;
       border-radius: 18px;
-      overflow: hidden;
       box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      text-align: center;
-    }
-
-    .featured img {
-      width: 100%;
-      height: 260px;
-      object-fit: cover;
-    }
-
-    .featured-content {
       padding: 20px;
+      text-align: center;
     }
 
     .toggle {
@@ -108,6 +99,11 @@
       box-shadow: 0 8px 25px rgba(0,0,0,0.1);
       text-decoration: none;
       color: #222;
+      transition: transform .2s;
+    }
+
+    .show-card:hover {
+      transform: translateY(-4px);
     }
 
     footer {
@@ -125,37 +121,36 @@
 <header>
   <strong>PAC RADIO</strong>
   <nav>
-    #listenListen</a>
-    #featuredFeatured</a>
-    #showsShows</a>
+    Home</a>
+    Shows</a>
   </nav>
 </header>
 
 <div class="hero">
   <h1>PanAfrica Connect Radio</h1>
   <p>Unity • Harmony • Cultural Exchange</p>
-  #listenListen Live</a>
+  Listen Live</a>
 </div>
 
 <div id="listen" class="player">
   <h2>LIVE ON AIR</h2>
   <audio controls style="width:100%">
-    https://a10.asurahosting.com:8530/radio.mp3
+    <source src="https://a10.asurahosting.com:8530/radio.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
   </audio>
 </div>
 
 <section id="featured">
   <h2>Featured Show</h2>
   <div class="featured">
-    images/shows/your-rights.jpg
-    <div class="featured-content">
-      <h3>Your Rights</h3>
-      <p>Legal literacy and civic empowerment.</p>
-    </div>
+    <h3>Your Rights</h3>
+    <p>Legal literacy and civic empowerment.</p>
   </div>
 </section>
+
 <section id="shows">
   <h2>Our Shows</h2>
+
   <button class="toggle" onclick="toggleShows()">Show / Hide Shows</button>
 
   <div id="shows-container" class="shows-grid">
@@ -177,10 +172,6 @@
 
   </div>
 </section>
-    </a>
-
-  </div>
-</section>
 
 <footer>
   © PanAfrica Connect Radio
@@ -188,8 +179,9 @@
 
 <script>
   function toggleShows() {
-    const el = document.getElementById("shows-container");
-    el.style.display = el.style.display === "none" ? "grid" : "none";
+    const container = document.getElementById("shows-container");
+    container.style.display =
+      container.style.display === "none" ? "grid" : "none";
   }
 </script>
 
