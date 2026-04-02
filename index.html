@@ -46,6 +46,10 @@
       padding: 40px 20px;
     }
 
+    .hero h1 {
+      margin-bottom: 10px;
+    }
+
     .hero a {
       background: #F0B429;
       color: #000;
@@ -100,5 +104,39 @@
       box-shadow: 0 12px 30px rgba(0,0,0,0.15);
     }
 
-    /* COMMENTS */
-    .comments {
+    footer {
+      background: #1C1F2A;
+      color: #aaa;
+      text-align: center;
+      padding: 25px;
+      margin-top: 60px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <strong>PAC RADIO</strong>
+  <nav>
+    <a href="#listen">Listen</a>
+    <a href="#shows">Shows</a>
+    <a href="#community">Community</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>PanAfrica Connect Radio</h1>
+  <p>Unity • Harmony • Cultural Exchange</p>
+  <a href="#listen">Listen Live</a>
+</div>
+
+<div id="listen" class="player">
+  <h2>LIVE ON AIR</h2>
+  <audio controls style="width:100%">
+    <source src="https://a10.asurahosting.com:8530/radio.mp3" type="audio/mpeg">
+  </audio>
+</div>
+
+<!-- ✅ STEP B: FULL SHOWS SECTION (CLICKABLE) -->
+<section id="shows">
