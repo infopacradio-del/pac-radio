@@ -135,7 +135,42 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   const auth = getAuth(app);
+import { push } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
+const uploadSection = document.getElementById("upload-section");
+const uploadBtn = document.getElementById("upload-btn");
+const episodesRef = ref(db, "episodes/your-rights");
+
+// ✅ Show upload form only when logged in
+onAuthStateChanged(auth, user => {
+  if (user) {
+    uploadSection.style.display = "block";
+  }
+});
+
+// ✅ Upload episode to Firebase
+uploadBtn.addEventListener("click", () => {
+  const title = document.getElementById("ep-title").value.trim();
+  const description = document.getElementById("ep-desc").value.trim();
+  const audio = document.getElementById("ep-audio").value.trim();
+
+  if (!title || !audio) {
+    alert("Episode title and audio URL are required.");
+    return;
+  }
+
+  push(episodesRef, {
+    title,
+    description,
+    audio,
+    createdAt: Date.now()
+  });
+
+  // Clear form fields
+  document.getElementById("ep-title").value = "";
+  document.getElementById("ep-desc").value = "";
+  document.getElementById("ep-audio").value = "";
+});
   let isHost = false;
 
   // 🔐 Check host login
