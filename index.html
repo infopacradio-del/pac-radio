@@ -13,6 +13,7 @@
       color: #222;
     }
 
+    /* HEADER */
     header {
       background: #1C1F2A;
       color: #F0B429;
@@ -32,9 +33,10 @@
       font-size: 14px;
     }
 
+    /* HERO */
     .hero {
       background: #1C1F2A;
-      min-height: 60vh;
+      min-height: 55vh;
       color: white;
       display: flex;
       flex-direction: column;
@@ -53,6 +55,7 @@
       border-radius: 30px;
     }
 
+    /* PLAYER */
     .player {
       background: white;
       max-width: 600px;
@@ -69,6 +72,13 @@
       margin: auto;
     }
 
+    section h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1.8rem;
+    }
+
+    /* SHOW CARDS */
     .shows-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -79,144 +89,16 @@
       background: white;
       padding: 24px;
       border-radius: 16px;
-      box-shadow: 0 8px 25px rgba(0,0,0,.1);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
       text-decoration: none;
       color: #222;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
+    .show-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    }
+
+    /* COMMENTS */
     .comments {
-      background: white;
-      border-radius: 16px;
-      padding: 30px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.1);
-    }
-
-    .comment {
-      margin-top: 12px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #eee;
-    }
-
-    #sticky-player {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background: #1C1F2A;
-      color: white;
-      padding: 12px 16px;
-      display: flex;
-      gap: 12px;
-      z-index: 1000;
-    }
-  </style>
-</head>
-
-<body>
-
-<header>
-  <strong>PAC RADIO</strong>
-  <nav>
-    <a href="#listen">Listen</a>
-    <a href="#shows">Shows</a>
-    <a href="#community">Community</a>
-  </nav>
-</header>
-
-<div class="hero">
-  <h1>PanAfrica Connect Radio</h1>
-  <p>Unity • Harmony • Cultural Exchange</p>
-  <a href="#listen">Listen Live</a>
-</div>
-
-<div id="listen" class="player">
-  <h2>LIVE ON AIR</h2>
-  <audio controls style="width:100%">
-    <source src="https://a10.asurahosting.com:8530/radio.mp3" type="audio/mpeg">
-  </audio>
-</div>
-
-<section id="shows">
-  <h2>Our Shows</h2>
-  <div class="shows-grid">
-    <a href="#" class="show-card">
-      <h3>Africa in Celebration</h3>
-      <p>Culture, tradition, and joy.</p>
-    </a>
-    <a href="#" class="show-card">
-      <h3>Voices from the Ground</h3>
-      <p>Grassroots community voices.</p>
-    </a>
-  </div>
-</section>
-
-<section id="community">
-  <h2>Live Listener Comments</h2>
-  <div class="comments">
-    <form id="comment-form">
-      <input id="name" placeholder="Your name" required>
-      <textarea id="comment" placeholder="Your message" required></textarea>
-      <button type="submit">Send</button>
-    </form>
-    <div id="comment-list"></div>
-  </div>
-</section>
-
-<footer>© PanAfrica Connect Radio</footer>
-
-<div id="sticky-player">
-  <button id="togglePlay">▶</button>
-  <span>LIVE – PAC Radio</span>
-  <audio id="radioAudio">
-    <source src="https://a10.asurahosting.com:8530/radio.mp3" type="audio/mpeg">
-  </audio>
-</div>
-
-<script>
-  const audio = document.getElementById("radioAudio");
-  const toggle = document.getElementById("togglePlay");
-  toggle.onclick = () => audio.paused ? audio.play() : audio.pause();
-</script>
-
-<!-- FIREBASE -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyDkOfitOyXzftyriVlWIplzrMH4FPyCYw0",
-    authDomain: "pac-radio-d838c.firebaseapp.com",
-    databaseURL: "https://pac-radio-d838c-default-rtdb.firebaseio.com",
-    projectId: "pac-radio-d838c",
-    messagingSenderId: "199462097770",
-    appId: "1:199462097770:web:5281db835205b64d518b13"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-
-  const commentsRef = ref(db, "comments/home");
-
-  const form = document.getElementById("comment-form");
-  const list = document.getElementById("comment-list");
-
-  form.addEventListener("submit", e => {
-    e.preventDefault();
-    push(commentsRef, {
-      name: name.value,
-      text: comment.value,
-      time: Date.now()
-    });
-    comment.value = "";
-  });
-
-  onChildAdded(commentsRef, snap => {
-    const c = snap.val();
-    const div = document.createElement("div");
-    div.className = "comment";
-    div.innerHTML = `<strong>${c.name}</strong>: ${c.text}`;
-    list.prepend(div);
-  });
-</script>
-
-</body>
-</html>
