@@ -129,13 +129,18 @@
   const episodesDiv = document.getElementById("episodes");
   const uploadSection = document.getElementById("upload-section");
   const uploadBtn = document.getElementById("upload-btn");
+  
+function revealUploadIfLoggedIn() {
+  if (auth.currentUser) {
+    uploadSection.style.display = "block";
+  }
+}
 
-  // ✅ SHOW UPLOAD FORM WHEN LOGGED IN
-  onAuthStateChanged(auth, user => {
-    if (user) {
-      uploadSection.style.display = "block";
-    }
-  });
+// Check immediately
+revealUploadIfLoggedIn();
+
+// Check again after Firebase finishes restoring auth
+setTimeout(revealUploadIfLoggedIn, 1000);
 
   // ✅ UPLOAD EPISODE
   uploadBtn.onclick = () => {
