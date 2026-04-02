@@ -4,77 +4,136 @@
   <meta charset="UTF-8">
   <title>Your Rights | PAC Radio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f2f2f2;
+      color: #222;
+    }
+
+    a {
+      color: #1C1F2A;
+      text-decoration: none;
+    }
+
+    .back {
+      display: inline-block;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .intro {
+      max-width: 800px;
+      margin: 0 auto 30px;
+      text-align: center;
+    }
+
+    .episode {
+      background: white;
+      padding: 16px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }
+
+    .episode h3 {
+      margin-top: 0;
+    }
+
+    .share {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .delete {
+      background: #c62828;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 
-<body data-show="your-rights">
+<body>
 
-<header>
-  <a href="../index.html">← Back to Home</a>
-</header>
+  <a class="back" href="../index.html">← Back to Home</a>
 
-<h1>Your Rights</h1>
+  <h1>Your Rights</h1>
 
-<p>
-  Legal literacy, civic education, and empowerment.
-  Breaking down rights, responsibilities, and policies
-  so communities are informed and protected.
-</p>
+  <div class="intro">
+    <p>
+      Legal literacy, civic education, and empowerment.
+      Breaking down rights, laws, and responsibilities in clear language.
+    </p>
 
-<audio controls style="width:100%">
-  <source src="https://a10.asurahosting.com:8530/radio.mp3" type="audio/mpeg">
-</audio>
+    <!-- Live stream -->
+    <audio controls style="width:100%; margin-top:15px;">
+      <source src="https://a10.asurahosting.com:8530/radio.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
 
-<hr>
+    <!-- Share show -->
+    <p class="share">
+      <a
+        target="_blank"
+        href="https://wa.me/?text=Listen%20to%20Your%20Rights%20on%20PAC%20Radio:%20https://infopacradio-del.github.io/pac-radio/shows/your-rights.html">
+        📲 Share this show on WhatsApp
+      </a>
+    </p>
+  </div>
 
-<h2>Live Listener Comments</h2>
+  <hr>
 
-<form id="comment-form">
-  <input id="name" placeholder="Your name" required>
-  <textarea id="comment" placeholder="Your message" required></textarea>
-  <button type="submit">Send</button>
-</form>
-
-<div id="comment-list"></div>
+  <h2>Episodes</h2>
+  <div id="episodes"></div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+  import {
+    getDatabase,
+    ref,
+    onChildAdded,
+    remove
+  } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+  import {
+    getAuth,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDkOfitOyXzftyriVlWIplzrMH4FPyCYw0",
     authDomain: "pac-radio-d838c.firebaseapp.com",
     databaseURL: "https://pac-radio-d838c-default-rtdb.firebaseio.com",
-    projectId: "pac-radio-d838c",
-    messagingSenderId: "199462097770",
-    appId: "1:199462097770:web:5281db835205b64d518b13"
+    projectId: "pac-radio-d838c"
   };
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
+  const auth = getAuth(app);
 
-  const showKey = document.body.dataset.show;
-  const commentsRef = ref(db, `comments/${showKey}`);
+  let isHost = false;
 
-  const form = document.getElementById("comment-form");
-  const list = document.getElementById("comment-list");
-
-  form.addEventListener("submit", e => {
-    e.preventDefault();
-    push(commentsRef, {
-      name: name.value,
-      text: comment.value,
-      time: Date.now()
-    });
-    comment.value = "";
+  // 🔐 Check host login
+  onAuthStateChanged(auth, user => {
+    if (user) isHost = true;
   });
 
-  onChildAdded(commentsRef, snap => {
-    const c = snap.val();
+  const episodesRef = ref(db, "episodes/your-rights");
+  const container = document.getElementById("episodes");
+
+  // 🎧 Load episodes
+  onChildAdded(episodesRef, snap => {
+    const ep = snap.val();
+    const key = snap.key;
+
     const div = document.createElement("div");
-    div.innerHTML = `<strong>${c.name}</strong>: ${c.text}`;
-    list.prepend(div);
-  });
-</script>
-
-</body>
-</html>
