@@ -9,44 +9,50 @@
 <body style="font-family:Arial, sans-serif; padding:30px;">
 
   <h1>Host Login</h1>
-
   <p>For PAC Radio hosts & moderators only.</p>
 
   <input id="email" type="email" placeholder="Email"
-         style="display:block; margin-bottom:10px; width:100%; max-width:300px;">
+         style="display:block; margin-bottom:10px; width:100%; max-width:320px;">
 
   <input id="password" type="password" placeholder="Password"
-         style="display:block; margin-bottom:10px; width:100%; max-width:300px;">
+         style="display:block; margin-bottom:10px; width:100%; max-width:320px;">
 
   <button onclick="login()" style="padding:8px 16px;">Login</button>
 
-  <p id="status" style="margin-top:15px; color:red;"></p>
+  <p id="status" style="margin-top:15px;"></p>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from 
-      "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    setPersistence,
+    browserLocalPersistence
+  } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDkOfitOyXzftyriVlWIplzrMH4FPyCYw0",
-      authDomain: "pac-radio-d838c.firebaseapp.com"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyDkOfitOyXzftyriVlWIplzrMH4FPyCYw0",
+    authDomain: "pac-radio-d838c.firebaseapp.com"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-    window.login = () => {
-      signInWithEmailAndPassword(auth, email.value, password.value)
-        .then(() => {
-          document.getElementById("status").style.color = "green";
-          document.getElementById("status").textContent =
-            "Login successful. Go back to the show page.";
-        })
-        .catch(err => {
-          document.getElementById("status").textContent = err.message;
-        });
-    };
-  </script>
+  // ✅ FORCE LOGIN TO PERSIST ACROSS PAGES
+  await setPersistence(auth, browserLocalPersistence);
+
+  window.login = () => {
+    signInWithEmailAndPassword(auth, email.value, password.value)
+      .then(() => {
+        status.style.color = "green";
+        status.textContent = "Login successful. Open the show page in a new tab.";
+      })
+      .catch(err => {
+        status.style.color = "red";
+        status.textContent = err.message;
+      });
+  };
+</script>
 
 </body>
 </html>
