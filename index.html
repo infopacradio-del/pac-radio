@@ -34,14 +34,9 @@
 
     .hero {
       background: #1C1F2A;
-      min-height: 55vh;
       color: white;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      padding: 60px 20px;
       text-align: center;
-      padding: 40px 20px;
     }
 
     .hero a {
@@ -51,15 +46,17 @@
       text-decoration: none;
       font-weight: bold;
       border-radius: 30px;
+      display: inline-block;
+      margin-top: 20px;
     }
 
     .player {
       background: white;
       max-width: 600px;
-      margin: -40px auto 50px;
+      margin: -30px auto 40px;
       padding: 24px;
       border-radius: 14px;
-      box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
       text-align: center;
     }
 
@@ -74,6 +71,26 @@
       margin-bottom: 30px;
     }
 
+    /* FEATURED SHOW */
+    .featured {
+      background: white;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+    .featured img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+    }
+
+    .featured-content {
+      padding: 25px;
+    }
+
+    /* SHOW GRID */
     .shows-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -82,17 +99,33 @@
 
     .show-card {
       background: white;
-      padding: 24px;
+      padding: 22px;
       border-radius: 16px;
       box-shadow: 0 8px 25px rgba(0,0,0,0.1);
       text-decoration: none;
       color: #222;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform .2s;
     }
 
     .show-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    }
+
+    .archive-link {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 13px;
+      text-decoration: underline;
+    }
+
+    /* MODERATOR */
+    #moderator-banner {
+      display: none;
+      background: #F0B429;
+      color: #000;
+      text-align: center;
+      padding: 10px;
+      font-weight: bold;
     }
 
     footer {
@@ -107,80 +140,68 @@
 
 <body>
 
+<div id="moderator-banner">MODERATOR MODE ENABLED</div>
+
 <header>
   <strong>PAC RADIO</strong>
   <nav>
-    <a href="#listen">Listen</a>
-    <a href="#shows">Shows</a>
+    #listenListen</a>
+    #featuredFeatured</a>
+    #showsShows</a>
   </nav>
 </header>
 
 <div class="hero">
   <h1>PanAfrica Connect Radio</h1>
   <p>Unity • Harmony • Cultural Exchange</p>
-  <a href="#listen">Listen Live</a>
+  #listenListen Live</a>
 </div>
 
 <div id="listen" class="player">
   <h2>LIVE ON AIR</h2>
   <audio controls style="width:100%">
-    <source src="https://a10.asurahosting.com:8530/radio.mp3" type="audio/mpeg">
+    https://a10.asurahosting.com:8530/radio.mp3
   </audio>
 </div>
+
+<section id="featured">
+  <h2>Featured Show</h2>
+  <div class="featured">
+    <img id="featured-img" src="images/shows/your-rights.jpg">
+    <div class="featured-content">
+      <h3 id="featured-title">Your Rights</h3>
+      <p id="featured-desc">Legal literacy, civic education & empowerment.</p>
+    </div>
+  </div>
+</section>
 
 <section id="shows">
   <h2>Our Shows</h2>
 
   <div class="shows-grid">
 
-    <a href="shows/your-rights.html" class="show-card">
+    shows/your-rights.html
       <h3>Your Rights</h3>
-      <p>Legal literacy, civic education & empowerment.</p>
+      <p>Legal literacy & civic empowerment.</p>
+      episodes/your-rights.html
     </a>
 
-    <a href="shows/page-turners.html" class="show-card">
+    shows/page-turners.html
       <h3>Page Turners</h3>
-      <p>Books, authors and African storytelling.</p>
+      <p>Books, authors & African storytelling.</p>
+      episodes/page-turners.html
     </a>
 
-    <a href="shows/africa-our-story.html" class="show-card">
+    shows/africa-our-story.html
       <h3>Africa: Our Story</h3>
-      <p>History, memory and African perspectives.</p>
+      <p>History & African perspectives.</p>
+      episodes/africa-our-story.html
     </a>
 
-    <a href="shows/understanding-islam.html" class="show-card">
-      <h3>Understanding Islam</h3>
-      <p>Faith, identity and dialogue.</p>
-    </a>
-
-    <a href="shows/shameless-she-speaks.html" class="show-card">
-      <h3>Shameless She Speaks</h3>
-      <p>Bold conversations on womanhood.</p>
-    </a>
-
-    <a href="shows/men-of-tomorrow.html" class="show-card">
-      <h3>Men of Tomorrow</h3>
-      <p>Masculinity, leadership and growth.</p>
-    </a>
-
-    <a href="shows/next-gen-africa.html" class="show-card">
-      <h3>Next Gen Africa</h3>
-      <p>Youth voices, culture and future thinking.</p>
-    </a>
-
-    <a href="shows/parenting-circle.html" class="show-card">
-      <h3>Parenting Circle</h3>
-      <p>Care, family and raising children.</p>
-    </a>
-
-    <a href="shows/youth-parliament.html" class="show-card">
-      <h3>Youth Parliament</h3>
-      <p>Debate, policy and youth participation.</p>
-    </a>
-
-    <a href="shows/normalize-it.html" class="show-card">
+    shows/normalize-it.html
       <h3>Normalize It</h3>
-      <p>Honest conversations that challenge stigma.</p>
+      <p>Conversations that challenge stigma.</p>
+      episodes/normalize-it.html
     </a>
 
   </div>
@@ -190,5 +211,45 @@
   © PanAfrica Connect Radio
 </footer>
 
+<script>
+  /* FEATURE ROTATION */
+  const featured = [
+    {
+      title: "Your Rights",
+      desc: "Legal literacy & civic empowerment.",
+      img: "images/shows/your-rights.jpg"
+    },
+    {
+      title: "Page Turners",
+      desc: "Books, authors & African storytelling.",
+      img: "images/shows/page-turners.jpg"
+    },
+    {
+      title: "Africa: Our Story",
+      desc: "History & African perspectives.",
+      img: "images/shows/africa-our-story.jpg"
+    }
+  ];
+
+  let current = 0;
+
+  function rotateFeatured() {
+    document.getElementById("featured-title").innerText = featured[current].title;
+    document.getElementById("featured-desc").innerText = featured[current].desc;
+    document.getElementById("featured-img").src = featured[current].img;
+    current = (current + 1) % featured.length;
+  }
+
+  setInterval(rotateFeatured, 8000);
+
+  /* MODERATOR TOGGLE */
+  const MODERATOR_MODE = false; // ← change to true when hosting
+
+  if (MODERATOR_MODE) {
+    document.getElementById("moderator-banner").style.display = "block";
+  }
+</script>
+
 </body>
 </html>
+``
