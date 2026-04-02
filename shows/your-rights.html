@@ -145,6 +145,42 @@
 
   const episodesRef = ref(db, "episodes/your-rights");
   const container = document.getElementById("episodes");
+  // 🔐 HOST-ONLY UPLOAD FORM LOGIC
+import { push } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+const uploadSection = document.getElementById("upload-section");
+const uploadBtn = document.getElementById("upload-btn");
+
+// Show upload form ONLY if host is logged in
+onAuthStateChanged(auth, user => {
+  if (user) {
+    uploadSection.style.display = "block";
+  }
+});
+
+// Handle upload button click
+uploadBtn.addEventListener("click", () => {
+  const title = document.getElementById("ep-title").value.trim();
+  const description = document.getElementById("ep-desc").value.trim();
+  const audio = document.getElementById("ep-audio").value.trim();
+
+  if (!title || !audio) {
+    alert("Episode title and audio URL are required.");
+    return;
+  }
+
+  push(episodesRef, {
+    title,
+    description,
+    audio,
+    createdAt: Date.now()
+  });
+
+  // Clear inputs
+  document.getElementById("ep-title").value = "";
+  document.getElementById("ep-desc").value = "";
+  document.getElementById("ep-audio").value = "";
+});
 
   // 🎧 Load episodes
   onChildAdded(episodesRef, snap => {
