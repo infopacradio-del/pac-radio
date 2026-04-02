@@ -17,15 +17,10 @@
     a {
       color: #1C1F2A;
       text-decoration: none;
-    }
-
-    .back {
-      display: inline-block;
-      margin-bottom: 20px;
       font-weight: bold;
     }
 
-    h1 {
+    h1, h2 {
       text-align: center;
     }
 
@@ -43,13 +38,9 @@
       box-shadow: 0 6px 16px rgba(0,0,0,0.12);
     }
 
-    .episode h3 {
-      margin-top: 0;
-    }
-
     .share {
-      margin-top: 10px;
       font-size: 14px;
+      margin-top: 10px;
     }
 
     .delete {
@@ -57,16 +48,36 @@
       color: white;
       border: none;
       padding: 6px 10px;
+      margin-top: 10px;
       border-radius: 4px;
       cursor: pointer;
-      margin-top: 10px;
+    }
+
+    #upload-section {
+      display: none;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }
+
+    input, textarea {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+    }
+
+    button {
+      padding: 8px 14px;
+      cursor: pointer;
     }
   </style>
 </head>
 
 <body>
 
-  <a class="back" href="../index.html">← Back to Home</a>
+  <a href="../index.html">← Back to Home</a>
 
   <h1>Your Rights</h1>
 
@@ -76,7 +87,7 @@
       Breaking down rights, laws, and responsibilities in clear language.
     </p>
 
-    <!-- Live stream -->
+    <!-- Live Stream -->
     <audio controls style="width:100%; margin-top:15px;">
       <source src="https://a10.asurahosting.com:8530/radio.mp3" type="audio/mpeg">
       Your browser does not support the audio element.
@@ -84,8 +95,7 @@
 
     <!-- Share show -->
     <p class="share">
-      <a
-        target="_blank"
+      <a target="_blank"
         href="https://wa.me/?text=Listen%20to%20Your%20Rights%20on%20PAC%20Radio:%20https://infopacradio-del.github.io/pac-radio/shows/your-rights.html">
         📲 Share this show on WhatsApp
       </a>
@@ -93,31 +103,28 @@
   </div>
 
   <hr>
-<!-- 🔐 HOST-ONLY EPISODE UPLOAD FORM -->
-<div id="upload-section" style="display:none; margin-bottom:30px;">
 
-  <h2>Upload New Episode</h2>
+  <!-- 🔐 HOST ONLY UPLOAD FORM -->
+  <div id="upload-section">
+    <h2>Upload New Episode</h2>
 
-  <input id="ep-title" type="text" placeholder="Episode title" style="width:100%;margin-bottom:10px;"><br>
+    <input id="ep-title" type="text" placeholder="Episode title">
+    <textarea id="ep-desc" placeholder="Episode description"></textarea>
+    <input id="ep-audio" type="text" placeholder="Audio URL (MP3 link)">
+    <button id="upload-btn">Upload Episode</button>
+  </div>
 
-  <textarea id="ep-desc" placeholder="Episode description"
-    style="width:100%;margin-bottom:10px;"></textarea><br>
-
-  <input id="ep-audio" type="text"
-    placeholder="Audio URL (MP3 link)"
-    style="width:100%;margin-bottom:10px;"><br>
-
-  <button id="upload-btn">Upload Episode</button>
-</div>
   <h2>Episodes</h2>
   <div id="episodes"></div>
 
+<!-- ================= SCRIPT ================= -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
   import {
     getDatabase,
     ref,
     onChildAdded,
+    push,
     remove
   } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
   import {
@@ -125,6 +132,7 @@
     onAuthStateChanged
   } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
+  /* Firebase config */
   const firebaseConfig = {
     apiKey: "AIzaSyDkOfitOyXzftyriVlWIplzrMH4FPyCYw0",
     authDomain: "pac-radio-d838c.firebaseapp.com",
@@ -132,94 +140,78 @@
     projectId: "pac-radio-d838c"
   };
 
+  /* Init */
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   const auth = getAuth(app);
-import { push } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-const uploadSection = document.getElementById("upload-section");
-const uploadBtn = document.getElementById("upload-btn");
-const episodesRef = ref(db, "episodes/your-rights");
+  /* DOM refs */
+  const episodesContainer = document.getElementById("episodes");
+  const uploadSection = document.getElementById("upload-section");
+  const uploadBtn = document.getElementById("upload-btn");
 
-// ✅ Show upload form only when logged in
-onAuthStateChanged(auth, user => {
-  if (user) {
-    uploadSection.style.display = "block";
-  }
-});
-
-// ✅ Upload episode to Firebase
-uploadBtn.addEventListener("click", () => {
-  const title = document.getElementById("ep-title").value.trim();
-  const description = document.getElementById("ep-desc").value.trim();
-  const audio = document.getElementById("ep-audio").value.trim();
-
-  if (!title || !audio) {
-    alert("Episode title and audio URL are required.");
-    return;
-  }
-
-  push(episodesRef, {
-    title,
-    description,
-    audio,
-    createdAt: Date.now()
-  });
-
-  // Clear form fields
-  document.getElementById("ep-title").value = "";
-  document.getElementById("ep-desc").value = "";
-  document.getElementById("ep-audio").value = "";
-});
-  let isHost = false;
-
-  // 🔐 Check host login
-  onAuthStateChanged(auth, user => {
-    if (user) isHost = true;
-  });
-
+  /* Firebase ref */
   const episodesRef = ref(db, "episodes/your-rights");
-  const container = document.getElementById("episodes");
-  // 🔐 HOST-ONLY UPLOAD FORM LOGIC
-import { push } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-const uploadSection = document.getElementById("upload-section");
-const uploadBtn = document.getElementById("upload-btn");
-
-// Show upload form ONLY if host is logged in
-onAuthStateChanged(auth, user => {
-  if (user) {
-    uploadSection.style.display = "block";
-  }
-});
-
-// Handle upload button click
-uploadBtn.addEventListener("click", () => {
-  const title = document.getElementById("ep-title").value.trim();
-  const description = document.getElementById("ep-desc").value.trim();
-  const audio = document.getElementById("ep-audio").value.trim();
-
-  if (!title || !audio) {
-    alert("Episode title and audio URL are required.");
-    return;
-  }
-
-  push(episodesRef, {
-    title,
-    description,
-    audio,
-    createdAt: Date.now()
+  /* Show upload form ONLY for logged-in hosts */
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      uploadSection.style.display = "block";
+    }
   });
 
-  // Clear inputs
-  document.getElementById("ep-title").value = "";
-  document.getElementById("ep-desc").value = "";
-  document.getElementById("ep-audio").value = "";
-});
+  /* Upload episode */
+  uploadBtn.addEventListener("click", () => {
+    const title = document.getElementById("ep-title").value.trim();
+    const description = document.getElementById("ep-desc").value.trim();
+    const audio = document.getElementById("ep-audio").value.trim();
 
-  // 🎧 Load episodes
+    if (!title || !audio) {
+      alert("Title and audio URL are required.");
+      return;
+    }
+
+    push(episodesRef, {
+      title,
+      description,
+      audio,
+      createdAt: Date.now()
+    });
+
+    document.getElementById("ep-title").value = "";
+    document.getElementById("ep-desc").value = "";
+    document.getElementById("ep-audio").value = "";
+  });
+
+  /* Load episodes */
   onChildAdded(episodesRef, snap => {
     const ep = snap.val();
     const key = snap.key;
 
     const div = document.createElement("div");
+    div.className = "episode";
+
+    div.innerHTML = `
+      <h3>${ep.title}</h3>
+      <p>${ep.description || ""}</p>
+      <audio controls style="width:100%">
+        <source src="${ep.audio}" type="audio/mncodeURIComponent(
+             ep.title + " – Listen on PAC Radio: " + location.href
+           )on (host only) */
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        const del = document.createElement("button");
+        del.className = "delete";
+        del.textContent = "Delete Episode";
+        del.onclick = () =>
+          remove(ref(db, "episodes/your-rights/" + key));
+        div.appendChild(del);
+      }
+    });
+
+    episodesContainer.appendChild(div);
+  });
+</script>
+
+</body>
+</html>
