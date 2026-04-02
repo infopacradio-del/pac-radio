@@ -32,10 +32,9 @@
       font-size: 14px;
     }
 
-    /* HERO */
     .hero {
       background: #1C1F2A;
-      min-height: 50vh;
+      min-height: 55vh;
       color: white;
       display: flex;
       flex-direction: column;
@@ -54,11 +53,10 @@
       border-radius: 30px;
     }
 
-    /* PLAYER */
     .player {
       background: white;
       max-width: 600px;
-      margin: -40px auto 40px;
+      margin: -40px auto 50px;
       padding: 24px;
       border-radius: 14px;
       box-shadow: 0 12px 35px rgba(0,0,0,0.15);
@@ -76,22 +74,6 @@
       margin-bottom: 30px;
     }
 
-    /* FEATURED SHOW */
-    .featured {
-      background: linear-gradient(135deg, #1C1F2A, #2a2e45);
-      color: white;
-      border-radius: 20px;
-      padding: 35px;
-      margin-bottom: 50px;
-      text-align: center;
-    }
-
-    .featured span {
-      color: #F0B429;
-      font-weight: bold;
-    }
-
-    /* SHOW CARDS */
     .shows-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -106,36 +88,11 @@
       text-decoration: none;
       color: #222;
       transition: transform 0.2s, box-shadow 0.2s;
-      position: relative;
     }
 
     .show-card:hover {
       transform: translateY(-4px);
       box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-    }
-
-    .live-badge {
-      color: red;
-      font-weight: bold;
-      font-size: 13px;
-    }
-
-    .episodes-link {
-      display: inline-block;
-      margin-top: 10px;
-      font-size: 13px;
-      color: #1C1F2A;
-      text-decoration: underline;
-    }
-
-    /* MODERATOR BANNER */
-    #moderator-banner {
-      background: #F0B429;
-      color: #000;
-      text-align: center;
-      font-weight: bold;
-      padding: 10px;
-      display: none;
     }
 
     footer {
@@ -150,15 +107,10 @@
 
 <body>
 
-<div id="moderator-banner">
-  MODERATOR MODE ENABLED
-</div>
-
 <header>
   <strong>PAC RADIO</strong>
   <nav>
     <a href="#listen">Listen</a>
-    <a href="#featured">Featured</a>
     <a href="#shows">Shows</a>
   </nav>
 </header>
@@ -176,88 +128,59 @@
   </audio>
 </div>
 
-<section id="featured">
-  <h2>Featured Show</h2>
-  <div class="featured" id="featured-show">
-    <span>Now Highlighting</span>
-    <h3 id="featured-title">PAC Radio</h3>
-    <p id="featured-desc">Voices from across Africa.</p>
-  </div>
-</section>
-
 <section id="shows">
   <h2>Our Shows</h2>
 
   <div class="shows-grid">
 
-    <a class="show-card" href="shows/your-rights.html" data-show="your-rights">
-      <span class="live-badge" id="your-rights-live"></span>
+    <a href="shows/your-rights.html" class="show-card">
       <h3>Your Rights</h3>
-      <p>Legal literacy & civic empowerment.</p>
-      <span class="episodes-link">View episodes</span>
+      <p>Legal literacy, civic education & empowerment.</p>
     </a>
 
-    <a class="show-card" href="shows/page-turners.html" data-show="page-turners">
-      <span class="live-badge" id="page-turners-live"></span>
+    <a href="shows/page-turners.html" class="show-card">
       <h3>Page Turners</h3>
-      <p>Books, authors & African storytelling.</p>
-      <span class="episodes-link">View episodes</span>
+      <p>Books, authors and African storytelling.</p>
     </a>
 
-    <a class="show-card" href="shows/africa-our-story.html" data-show="africa-our-story">
-      <span class="live-badge" id="africa-our-story-live"></span>
+    <a href="shows/africa-our-story.html" class="show-card">
       <h3>Africa: Our Story</h3>
-      <p>History, memory & African perspectives.</p>
-      <span class="episodes-link">View episodes</span>
+      <p>History, memory and African perspectives.</p>
     </a>
 
-    <a class="show-card" href="shows/understanding-islam.html" data-show="understanding-islam">
-      <span class="live-badge" id="understanding-islam-live"></span>
+    <a href="shows/understanding-islam.html" class="show-card">
       <h3>Understanding Islam</h3>
-      <p>Faith, dialogue & lived experience.</p>
-      <span class="episodes-link">View episodes</span>
+      <p>Faith, identity and dialogue.</p>
     </a>
 
-    <a class="show-card" href="shows/shameless-she-speaks.html" data-show="shameless-she-speaks">
-      <span class="live-badge" id="shameless-she-speaks-live"></span>
+    <a href="shows/shameless-she-speaks.html" class="show-card">
       <h3>Shameless She Speaks</h3>
       <p>Bold conversations on womanhood.</p>
-      <span class="episodes-link">View episodes</span>
     </a>
 
-    <a class="show-card" href="shows/men-of-tomorrow.html" data-show="men-of-tomorrow">
-      <span class="live-badge" id="men-of-tomorrow-live"></span>
+    <a href="shows/men-of-tomorrow.html" class="show-card">
       <h3>Men of Tomorrow</h3>
-      <p>Masculinity, growth & responsibility.</p>
-      <span class="episodes-link">View episodes</span>
+      <p>Masculinity, leadership and growth.</p>
     </a>
 
-    <a class="show-card" href="shows/next-gen-africa.html" data-show="next-gen-africa">
-      <span class="live-badge" id="next-gen-africa-live"></span>
+    <a href="shows/next-gen-africa.html" class="show-card">
       <h3>Next Gen Africa</h3>
-      <p>Youth voices & African futures.</p>
-      <span class="episodes-link">View episodes</span>
+      <p>Youth voices, culture and future thinking.</p>
     </a>
 
-    <a class="show-card" href="shows/parenting-circle.html" data-show="parenting-circle">
-      <span class="live-badge" id="parenting-circle-live"></span>
+    <a href="shows/parenting-circle.html" class="show-card">
       <h3>Parenting Circle</h3>
-      <p>Family, care & raising children.</p>
-      <span class="episodes-link">View episodes</span>
+      <p>Care, family and raising children.</p>
     </a>
 
-    <a class="show-card" href="shows/youth-parliament.html" data-show="youth-parliament">
-      <span class="live-badge" id="youth-parliament-live"></span>
+    <a href="shows/youth-parliament.html" class="show-card">
       <h3>Youth Parliament</h3>
-      <p>Debate, leadership & participation.</p>
-      <span class="episodes-link">View episodes</span>
+      <p>Debate, policy and youth participation.</p>
     </a>
 
-    <a class="show-card" href="shows/normalize-it.html" data-show="normalize-it">
-      <span class="live-badge" id="normalize-it-live"></span>
+    <a href="shows/normalize-it.html" class="show-card">
       <h3>Normalize It</h3>
-      <p>Conversations that challenge stigma.</p>
-      <span class="episodes-link">View episodes</span>
+      <p>Honest conversations that challenge stigma.</p>
     </a>
 
   </div>
@@ -266,31 +189,6 @@
 <footer>
   © PanAfrica Connect Radio
 </footer>
-
-<script>
-  /* FEATURE ROTATION */
-  const cards = document.querySelectorAll(".show-card");
-  let current = 0;
-
-  function rotateFeatured() {
-    const card = cards[current];
-    document.getElementById("featured-title").innerText =
-      card.querySelector("h3").innerText;
-    document.getElementById("featured-desc").innerText =
-      card.querySelector("p").innerText;
-    current = (current + 1) % cards.length;
-  }
-
-  rotateFeatured();
-  setInterval(rotateFeatured, 10000);
-
-  /* MODERATOR TOGGLE (manual enable) */
-  const MODERATOR_MODE = false; // ← change to true when hosting
-
-  if (MODERATOR_MODE) {
-    document.getElementById("moderator-banner").style.display = "block";
-  }
-</script>
 
 </body>
 </html>
