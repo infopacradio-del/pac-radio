@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PAC Radio – Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background:#f2f2f2; }
+    h1 { text-align:center; }
+    .panel { background:#fff; padding:20px; border-radius:12px; margin-bottom:20px; }
+    input, textarea { width:100%; margin-bottom:10px; padding:8px; }
+    button { padding:8px 14px; cursor:pointer; }
+    .episode { border:1px solid #ddd; padding:12px; margin-bottom:10px; }
+    .delete { background:#c62828; color:white; border:none; }
+  </style>
+</head>
+
+<body>
+
+<h1>Admin Dashboard – Your Rights</h1>
+<p><a href="../shows/your-rights.html">View public show page →</a></p>
+
+<div class="panel">
+  <h2>Upload New Episode</h2>
+  <input id="title" placeholder="Episode title">
+  <textarea id="desc" placeholder="Description"></textarea>
+  <input id="audio" placeholder="Audio URL (MP3)">
+  <button id="upload">Upload Episode</button>
+</div>
+
+<div class="panel">
+  <h2>Existing Episodes</h2>
+  <div id="episodes"></div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import {
+    getDatabase, ref, push, onChildAdded, remove
+  } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+  import {
+    getAuth, onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDkOfitOyXzftyriVlWIplzrMH4FPyCYw0",
+    authDomain: "pac-radio-d838c.firebaseapp.com",
+    databaseURL: "https://pac-radio-d838c-default-rtdb.firebaseio.com",
+    projectId: "pac-radio-d838c"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+
+  const episodesRef = ref(db, "episodes/your-rights");
+  const list = document.getElementById("episodes");
+
+  // Guard: only logged-in hosts can stay
+  onAuthStateChanged(auth, user => {
+    if (!user) {
+      window.location.href = "/pac-radio/admin/login.html";
+    }
+  });
+
+  // Upload
+  document.getElementById("upload").onclick = () => {
+    if (!title.value || !audio.value) {
+      alert("Title and audio URL required");
+      return;
+    }
+    push(episodesRef, {
+      title: title.value,
+      description: desc.value,
+      audio: audio.value,
+      createdAt: Date.now()
+    });
+    title.value = desc.value = audio.value = "";
+  };
+
+  // List + delete
+  onChildAdded(episodesRef, snap => {
+    const ep = snap.val();
+    const key = snap.key;
+    const div = document.createElement("div");
+    div.className = "episode";
+    div.innerHTML = `
+      <strong>${ep.title}</strong><br>
+      ${ep.description || ""}<br>
+      <button class="delete">Delete</button>
+    `;
+    div.querySelector(".delete").onclick = () =>
+      remove(ref(db, "episodes/your-rights/" + key));
+    list.prepend(div);
+  });
+</script>
+
+</body>
+</html>
+``
