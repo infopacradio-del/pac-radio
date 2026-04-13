@@ -2,126 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Your Rights | PAC Radio</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <style>
-    body {
-      margin: 0;
-      padding: 20px;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f4f4f4;
-      color: #222;
-    }
-
-    a {
-      text-decoration: none;
-      color: #1C1F2A;
-      font-weight: bold;
-    }
-
-    h1, h2 {
-      text-align: center;
-    }
-
-    .intro {
-      max-width: 850px;
-      margin: 0 auto 30px;
-      text-align: center;
-    }
-
-    .episode {
-      max-width: 850px;
-      margin: 0 auto 20px;
-      background: #fff;
-      padding: 18px;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
-    }
-
-    .episode h3 {
-      margin-top: 0;
-    }
-
-    audio {
-      width: 100%;
-      margin-top: 10px;
-    }
-
-    hr {
-      max-width: 850px;
-      margin: 40px auto;
-    }
-  </style>
+  <title>TEST PAGE</title>
 </head>
-
 <body>
 
-  <a href="../index.html">← Back to Home</a>
+<h1>TEST PAGE WORKING</h1>
 
-  <h1>Your Rights</h1>
+<p>If you see this text, GitHub Pages is serving this file.</p>
 
-  <div class="intro">
-    <p>
-      Legal literacy, civic education, and empowerment.
-      Breaking down rights, laws, and responsibilities in clear language.
-    </p>
-
-    <!-- Live stream (optional) -->
-    <audio controls>
-      <source src="https://a10.asurahosting.com:8530/radio.mp3" type="audio/mpeg">
-    </audio>
-  </div>
-
-  <hr>
-
-  <h2>Episodes</h2>
-  <div id="episodes"></div>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyDkOfitOyXzftyriVlWIplzrMH4FPyCYw0",
-      authDomain: "pac-radio-d838c.firebaseapp.com",
-      databaseURL: "https://pac-radio-d838c-default-rtdb.firebaseio.com",
-      projectId: "pac-radio-d838c"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    const episodesRef = ref(db, "episodes/your-rights");
-    const container = document.getElementById("episodes");
-
-    onValue(episodesRef, snapshot => {
-      container.innerHTML = "";
-
-      if (!snapshot.exists()) {
-        container.innerHTML = "<p style='text-align:center;'>No episodes available yet.</p>";
-        return;
-      }
-
-      const episodes = snapshot.val();
-
-      for (const key in episodes) {
-        const ep = episodes[key];
-
-        const div = document.createElement("div");
-        div.className = "episode";
-
-        div.innerHTML = `
-          <h3>${ep.title}</h3>
-          <p>${ep.description || ""}</p>
-          <audio controls>
-            <source src="${ep.audio.replace(/&amp;/g, '&')}" type="audio/mpeg
-        `;
-
-        container.prepend(div);
-      }
-    });
-  </script>
+<audio controls>
+  <source src="https://firebasestorage.googleapis.com/v0/b/pac-radio-d838c.firebasestorage.app/o/Episode%202-4.mp3?alt=media&token=a856d7c5-72a6-4cc3-be86-d7b8d4748c2f" type="audio/mpeg">
+</audio>
 
 </body>
 </html>
+``
