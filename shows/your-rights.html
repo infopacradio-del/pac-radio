@@ -142,7 +142,7 @@
           <h3>${ep.title}</h3>
           <p>${ep.description || ""}</p>
           <audio controls>
-            <source src="${ep.audio}" type="audio/mpeg    `;
+            <source src="${ep.audio.replace(/&amp;/g, '&')}" type="audio/mpeg">
 
         container.prepend(div); // newest at top
       }
