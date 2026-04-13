@@ -87,39 +87,44 @@
     const episodesRef = ref(db, "episodes/your-rights");
     const container = document.getElementById("episodes");
 
-    onValue(episodesRef, snapshot => {
+    onValue(episodesRef, snap => {
       container.innerHTML = "";
 
-      if (!snapshot.exists()) {
-        container.innerHTML =
-          "<p style='text-align:center;'>No episodes available yet.</p>";
+      if (!snap.exists()) {
+        container.innerHTML = "<p style='text-align:center;'>No episodes available yet.</p>";
         return;
       }
 
-      const episodes = snapshot.val();
+      const episodes = snap.val();
 
       for (const key in episodes) {
         const ep = episodes[key];
 
-        const div = document.createElement("div");
-        div.className = "episode";
+        // ✅ FIX HTML-ENCODED URL
+        const cleanAudioUrl = ep.audio.replace(/&amp;/g, "&");
 
-        const cleanAudioUrl = ep.audio.replace(/&amp;/g, '&');
+        const card = document.createElement("div");
+        card.className = "episode";
 
-        div.innerHTML = `
-          <he}</h3>
-          <p>${ep.description || ""}</p>
-          <audio controls preload="metadata">
-            ${cleanAudioUrl}
-            Your browser does not support the audio element.
-          </audio>
-        `;
+        const title = document.createElement("h3");
+        title.textContent = ep.title;
 
-        container.prepend(div);
+        const desc = document.createElement("p");
+        desc.textContent = ep.description || "";
+
+        const audio = document.createElement("audio");
+        audio.controls = true;
+        audio.preload = "metadata";
+        audio.src = cleanAudioUrl;
+
+        card.appendChild(title);
+        card.appendChild(desc);
+        card.appendChild(audio);
+
+        container.prepend(card);
       }
     });
   </script>
 
 </body>
 </html>
-``
