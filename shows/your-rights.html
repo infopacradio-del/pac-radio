@@ -43,12 +43,6 @@
       margin-top: 0;
     }
 
-    .share {
-      font-size: 14px;
-      margin-top: 8px;
-      text-align: center;
-    }
-
     audio {
       width: 100%;
       margin-top: 10px;
@@ -73,37 +67,20 @@
       Breaking down rights, laws, and responsibilities in clear language.
     </p>
 
-    <!-- OPTIONAL: Live stream player (music) -->
+    <!-- Live stream (optional) -->
     <audio controls>
-      https://a10.asurahosting.com:8530/radio.mp3
+      <source src="https://a10.asurahosting.com:8530/radio.mp3" type="audio/mpeg">
     </audio>
-
-    <p class="share">
-      <a
-        target="_blank"
-        href="https://wa.me/?text=Listen%20to%20Your%20Rights%20on%20PAC%20Radio:%20https://infopacradio-del.github.io/pac-radio/shows/your-rights.html">
-        📲 Share this show on WhatsApp
-      </a>
-    </p>
   </div>
 
   <hr>
 
   <h2>Episodes</h2>
-
   <div id="episodes"></div>
-
-  <!-- ===================================================== -->
-  <!-- ========== FIREBASE EPISODE LOADER SCRIPT ============ -->
-  <!-- ===================================================== -->
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import {
-      getDatabase,
-      ref,
-      onValue
-    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDkOfitOyXzftyriVlWIplzrMH4FPyCYw0",
@@ -112,21 +89,17 @@
       projectId: "pac-radio-d838c"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // EXACT path where your episodes exist
     const episodesRef = ref(db, "episodes/your-rights");
     const container = document.getElementById("episodes");
 
-    // Load and render episodes
     onValue(episodesRef, snapshot => {
       container.innerHTML = "";
 
       if (!snapshot.exists()) {
-        container.innerHTML =
-          "<p style='text-align:center;'>No episodes available yet.</p>";
+        container.innerHTML = "<p style='text-align:center;'>No episodes available yet.</p>";
         return;
       }
 
@@ -142,9 +115,10 @@
           <h3>${ep.title}</h3>
           <p>${ep.description || ""}</p>
           <audio controls>
-            <source src="${ep.audio.replace(/&amp;/g, '&')}" type="audio/mpeg">
+            <source src="${ep.audio.replace(/&amp;/g, '&')}" type="audio/mpeg
+        `;
 
-        container.prepend(div); // newest at top
+        container.prepend(div);
       }
     });
   </script>
