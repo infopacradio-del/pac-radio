@@ -127,6 +127,16 @@ episodeList.forEach((ep, index) => {
 
   const description = document.createElement("p");
   description.textContent = ep.description || "";
+if (ep.artwork) {
+  const img = document.createElement("img");
+  img.src = ep.artwork.replace(/&amp;/g, "&");
+  img.alt = ep.title + " artwork";
+  img.style.width = "100%";
+  img.style.borderRadius = "10px";
+  img.style.marginBottom = "12px";
+
+  card.appendChild(img);
+}
 
   const audio = document.createElement("audio");
   audio.controls = true;
