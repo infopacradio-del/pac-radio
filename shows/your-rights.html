@@ -62,11 +62,6 @@
       Legal literacy, civic education, and empowerment.
       Breaking down rights, laws, and responsibilities in clear language.
     </p>
-
-    <!-- Optional LIVE STREAM (music) -->
-    <audio controls>
-      https://a10.asurahosting.com:8530/radio.mp3
-    </audio>
   </div>
 
   <hr>
@@ -111,7 +106,7 @@
           <h3>${ep.title}</h3>
           <p>${ep.description || ""}</p>
           <audio controls>
-            <source src="${ep.audio.replace(/&amp;/g, '&ur browser does not support the audio element.
+            <source src="${ep.audio.replace(/&amp;/g, '&') browser does not support the audio element.
           </audio>
         `;
 
