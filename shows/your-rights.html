@@ -53,7 +53,7 @@
 
 <body>
 
-  ../index.html← Back to Home</a>
+  <a href="../index.html">← Back to Home</a>
 
   <h1>Your Rights</h1>
 
@@ -90,7 +90,8 @@
       container.innerHTML = "";
 
       if (!snapshot.exists()) {
-        container.innerHTML = "<p style='text-align:center;'>No episodes available yet.</p>";
+        container.innerHTML =
+          "<p style='text-align:center;'>No episodes available yet.</p>";
         return;
       }
 
@@ -102,11 +103,14 @@
         const div = document.createElement("div");
         div.className = "episode";
 
+        const cleanAudioUrl = ep.audio.replace(/&amp;/g, '&');
+
         div.innerHTML = `
-          <h3>${ep.title}</h3>
+          <he}</h3>
           <p>${ep.description || ""}</p>
-          <audio controls>
-            <source src="${ep.audio.replace(/&amp;/g, '&') browser does not support the audio element.
+          <audio controls preload="metadata">
+            ${cleanAudioUrl}
+            Your browser does not support the audio element.
           </audio>
         `;
 
@@ -117,3 +121,4 @@
 
 </body>
 </html>
+``
