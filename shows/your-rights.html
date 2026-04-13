@@ -106,10 +106,39 @@
         return;
       }
 
-      const episodes = snap.val();
+      const episodesObj = snap.val();
 
-      for (const key in episodes) {
-        const ep = episodes[key];
+/* Convert object → array and sort by newest */
+const episodeList = Object.values(episodesObj)
+  .sort((a, b) => b.createdAt - a.createdAt);
+
+episodeList.forEach((ep, index) => {
+  const cleanAudioUrl = ep.audio.replace(/&amp;/g, "&");
+
+  const card = document.createElement("div");
+  card.className = "episode";
+
+  const title = document.createElement("h3");
+  title.textContent = `Episode ${episodeList.length - index}: ${ep.title}`;
+
+  const date = document.createElement("small");
+  date.textContent = new Date(ep.createdAt).toLocaleDateString();
+
+  const description = document.createElement("p");
+  description.textContent = ep.description || "";
+
+  const audio = document.createElement("audio");
+  audio.controls = true;
+  audio.preload = "metadata";
+  audio.src = cleanAudioUrl;
+
+  card.appendChild(title);
+  card.appendChild(date);
+  card.appendChild(description);
+  card.appendChild(audio);
+
+  container.appendChild(card);
+});
 
         // ✅ FIX HTML-ENCODED URL
         const cleanAudioUrl = ep.audio.replace(/&amp;/g, "&");
