@@ -96,7 +96,7 @@ const SHOW_ID = "your-rights";
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    const episodesRef = ref(db, "episodes/your-rights");
+    const episodesRef = ref(db, `episodes/${SHOW_ID}`);
     const container = document.getElementById("episodes");
 
     onValue(episodesRef, snap => {
