@@ -7,190 +7,147 @@
 
   <style>
     body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f2f2f2;
       margin: 0;
       padding: 20px;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f4f4;
+      color: #222;
+    }
+
+    a {
+      text-decoration: none;
+      color: #1C1F2A;
+      font-weight: bold;
     }
 
     h1, h2 {
       text-align: center;
     }
 
-    a { text-decoration: none; color: #1C1F2A; }
-
     .intro {
-      max-width: 800px;
-      margin: auto;
+      max-width: 850px;
+      margin: 0 auto 30px;
       text-align: center;
     }
 
-    #upload-section {
-      display: none;
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 6px 16px rgba(0,0,0,.15);
-      margin: 30px auto;
-      max-width: 800px;
-    }
-
     .episode {
-      background: white;
-      padding: 16px;
+      max-width: 850px;
+      margin: 0 auto 20px;
+      background: #fff;
+      padding: 18px;
       border-radius: 10px;
-      margin-bottom: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,.12);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
     }
 
-    input, textarea {
+    .episode h3 {
+      margin-top: 0;
+    }
+
+    .share {
+      font-size: 14px;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    audio {
       width: 100%;
-      margin-bottom: 10px;
-      padding: 8px;
-    }
-
-    button {
-      padding: 8px 14px;
-      cursor: pointer;
-    }
-
-    .delete {
-      background: red;
-      color: white;
-      border: none;
       margin-top: 10px;
+    }
+
+    hr {
+      max-width: 850px;
+      margin: 40px auto;
     }
   </style>
 </head>
 
 <body>
 
-<a href="../index.html">← Back to Home</a>
+  <a href="../index.html">← Back to Home</a>
 
-<h1>Your Rights</h1>
+  <h1>Your Rights</h1>
 
-<div class="intro">
-  <p>
-    Legal literacy, civic education, and empowerment.
-    Breaking down rights, laws, and responsibilities in clear language.
-  </p>
+  <div class="intro">
+    <p>
+      Legal literacy, civic education, and empowerment.
+      Breaking down rights, laws, and responsibilities in clear language.
+    </p>
 
-  <audio controls style="width:100%; margin-top:15px;">
-    <source src="https://a10.asurahosting.com:8530/radio.mp3" type="audio/mpeg">
-  </audio>
+    <!-- OPTIONAL: Live stream player (music) -->
+    <audio controls>
+      https://a10.asurahosting.com:8530/radio.mp3
+    </audio>
 
-  <p>
-    <a target="_blank"
-       href="https://wa.me/?text=Listen%20to%20Your%20Rights%20on%20PAC%20Radio:%20https://infopacradio-del.github.io/pac-radio/shows/your-rights.html">
-      📲 Share this show on WhatsApp
-    </a>
-  </p>
-</div>
+    <p class="share">
+      <a
+        target="_blank"
+        href="https://wa.me/?text=Listen%20to%20Your%20Rights%20on%20PAC%20Radio:%20https://infopacradio-del.github.io/pac-radio/shows/your-rights.html">
+        📲 Share this show on WhatsApp
+      </a>
+    </p>
+  </div>
 
-<!-- 🔐 HOST UPLOAD FORM -->
-<div id="upload-section">
-  <h2>Upload New Episode</h2>
+  <hr>
 
-  <input id="ep-title" placeholder="Episode title">
-  <textarea id="ep-desc" placeholder="Episode description"></textarea>
-  <input id="ep-audio" placeholder="Audio URL (MP3)">
-  <button id="upload-btn">Upload Episode</button>
-</div>
+  <h2>Episodes</h2>
 
-<h2>Episodes</h2>
-<div id="episodes"></div>
+  <div id="episodes"></div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import {
-    getDatabase,
-    ref,
-    onChildAdded,
-    push,
-    remove
-  } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
-  import {
-    getAuth,
-    onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+  <!-- ===================================================== -->
+  <!-- ========== FIREBASE EPISODE LOADER SCRIPT ============ -->
+  <!-- ===================================================== -->
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDkOfitOyXzftyriVlWIplzrMH4FPyCYw0",
-    authDomain: "pac-radio-d838c.firebaseapp.com",
-    databaseURL: "https://pac-radio-d838c-default-rtdb.firebaseio.com",
-    projectId: "pac-radio-d838c"
-  };
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import {
+      getDatabase,
+      ref,
+      onValue
+    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-  const auth = getAuth(app);
+    const firebaseConfig = {
+      apiKey: "AIzaSyDkOfitOyXzftyriVlWIplzrMH4FPyCYw0",
+      authDomain: "pac-radio-d838c.firebaseapp.com",
+      databaseURL: "https://pac-radio-d838c-default-rtdb.firebaseio.com",
+      projectId: "pac-radio-d838c"
+    };
 
-  const episodesRef = ref(db, "episodes/your-rights");
-  const episodesDiv = document.getElementById("episodes");
-  const uploadSection = document.getElementById("upload-section");
-  const uploadBtn = document.getElementById("upload-btn");
-  
-function revealUploadIfLoggedIn() {
-  if (auth.currentUser) {
-    uploadSection.style.display = "block";
-  }
-}
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-// Check immediately
-revealUploadIfLoggedIn();
+    // EXACT path where your episodes exist
+    const episodesRef = ref(db, "episodes/your-rights");
+    const container = document.getElementById("episodes");
 
-// Check again after Firebase finishes restoring auth
-setTimeout(revealUploadIfLoggedIn, 1000);
+    // Load and render episodes
+    onValue(episodesRef, snapshot => {
+      container.innerHTML = "";
 
-  // ✅ UPLOAD EPISODE
-  uploadBtn.onclick = () => {
-    const title = ep-title.value.trim();
-    const desc = ep-desc.value.trim();
-    const audio = ep-audio.value.trim();
+      if (!snapshot.exists()) {
+        container.innerHTML =
+          "<p style='text-align:center;'>No episodes available yet.</p>";
+        return;
+      }
 
-    if (!title || !audio) {
-      alert("Title and audio URL required");
-      return;
-    }
+      const episodes = snapshot.val();
 
-    push(episodesRef, {
-      title,
-      description: desc,
-      audio,
-      createdAt: Date.now()
-    });
+      for (const key in episodes) {
+        const ep = episodes[key];
 
-    ep-title.value = "";
-    ep-desc.value = "";
-    ep-audio.value = "";
-  };
+        const div = document.createElement("div");
+        div.className = "episode";
 
-  // ✅ LOAD EPISODES
-  onChildAdded(episodesRef, snap => {
-    const ep = snap.val();
-    const key = snap.key;
+        div.innerHTML = `
+          <h3>${ep.title}</h3>
+          <p>${ep.description || ""}</p>
+          <audio controls>
+            <source src="${ep.audio}" type="audio/mpeg    `;
 
-    const div = document.createElement("div");
-    div.className = "episode";
-
-    div.innerHTML = `
-      <h3>${ep.title}</h3>
-      <p>${ep.description || ""}</p>
-      <audio controls style="width:100%">
-        <source src="${ep.audio}" type    if (user) {
-        const del = document.createElement("button");
-        del.textContent = "Delete";
-        del.className = "delete";
-        del.onclick = () =>
-          remove(ref(db, "episodes/your-rights/" + key));
-        div.appendChild(del);
+        container.prepend(div); // newest at top
       }
     });
-
-    episodesDiv.appendChild(div);
-  });
-</script>
+  </script>
 
 </body>
 </html>
-``
