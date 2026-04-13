@@ -71,12 +71,14 @@
       alert("Title and audio URL required");
       return;
     }
-    push(episodesRef, {
-      title: title.value,
-      description: desc.value,
-      audio: audio.value,
-      createdAt: Date.now()
-    });
+   
+push(episodesRef, {
+  title: title.value,
+  description: desc.value,
+  audio: audio.value,
+  artwork: artwork.value || "",
+  createdAt: Date.now()
+});
     title.value = desc.value = audio.value = "";
   };
 
