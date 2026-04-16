@@ -1,34 +1,41 @@
 <script type="module">
+  /* ===========================
+     Imports (must be top-level)
+     =========================== */
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import {
+    getDatabase,
+    ref,
+    onValue
+  } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+  /* ===========================
+     Show configuration
+     =========================== */
+  const SHOW_ID = "your-rights"; // change for other shows
+
+  /* ===========================
+     Firebase config
+     =========================== */
+  const firebaseConfig = {
+    apiKey: "AIzaSyDkOfitOyXzftyriVlWIplzrMH4FPyCYw0",
+    authDomain: "pac-radio-d838c.firebaseapp.com",
+    databaseURL: "https://pac-radio-d838c-default-rtdb.firebaseio.com",
+    projectId: "pac-radio-d838c"
+  };
+
+  /* ===========================
+     Init Firebase (runs immediately)
+     =========================== */
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  /* ===========================
+     Wait for DOM before touching it
+     =========================== */
   document.addEventListener("DOMContentLoaded", () => {
-    /* ===========================
-       Show configuration
-       =========================== */
-    const SHOW_ID = "your-rights";
-
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import {
-      getDatabase,
-      ref,
-      onValue
-    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
-
-    /* ===========================
-       Firebase config
-       =========================== */
-    const firebaseConfig = {
-      apiKey: "AIzaSyDkOfitOyXzftyriVlWIplzrMH4FPyCYw0",
-      authDomain: "pac-radio-d838c.firebaseapp.com",
-      databaseURL: "https://pac-radio-d838c-default-rtdb.firebaseio.com",
-      projectId: "pac-radio-d838c"
-    };
-
-    /* ===========================
-       Init Firebase
-       =========================== */
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
     const container = document.getElementById("episodes");
+
     if (!container) {
       console.error("Episodes container not found");
       return;
@@ -36,9 +43,6 @@
 
     const episodesRef = ref(db, `episodes/${SHOW_ID}`);
 
-    /* ===========================
-       Load and render episodes
-       =========================== */
     onValue(episodesRef, snapshot => {
       container.innerHTML = "";
 
@@ -50,10 +54,12 @@
 
       const episodesObj = snapshot.val();
 
+      // Convert object → array and sort newest first
       const episodeList = Object.values(episodesObj)
         .sort((a, b) => b.createdAt - a.createdAt);
 
       episodeList.forEach((ep, index) => {
+        // ✅ Correct URL decoding
         const cleanAudioUrl = ep.audio.replace(/&amp;/g, "&");
 
         const card = document.createElement("div");
