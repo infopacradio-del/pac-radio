@@ -1,62 +1,87 @@
 <script type="module">
-  const SHOW_ID = "page-turners";
+  document.addEventListener("DOMContentLoaded", () => {
+    /* ===========================
+       Show configuration
+       =========================== */
+    const SHOW_ID = "your-rights";
 
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import {
+      getDatabase,
+      ref,
+      onValue
+    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDkOfitOyXzftyriVlWIplzrMH4FPyCYw0",
-    authDomain: "pac-radio-d838c.firebaseapp.com",
-    databaseURL: "https://pac-radio-d838c-default-rtdb.firebaseio.com",
-    projectId: "pac-radio-d838c"
-  };
+    /* ===========================
+       Firebase config
+       =========================== */
+    const firebaseConfig = {
+      apiKey: "AIzaSyDkOfitOyXzftyriVlWIplzrMH4FPyCYw0",
+      authDomain: "pac-radio-d838c.firebaseapp.com",
+      databaseURL: "https://pac-radio-d838c-default-rtdb.firebaseio.com",
+      projectId: "pac-radio-d838c"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+    /* ===========================
+       Init Firebase
+       =========================== */
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-  const episodesRef = ref(db, `episodes/${SHOW_ID}`);
-  const container = document.getElementById("episodes");
-
-  onValue(episodesRef, snap => {
-    container.innerHTML = "";
-
-    if (!snap.exists()) {
-      container.innerHTML =
-        "<p style='text-align:center;'>No episodes available yet.</p>";
+    const container = document.getElementById("episodes");
+    if (!container) {
+      console.error("Episodes container not found");
       return;
     }
 
-    const episodesObj = snap.val();
+    const episodesRef = ref(db, `episodes/${SHOW_ID}`);
 
-    const episodeList = Object.values(episodesObj)
-      .sort((a, b) => b.createdAt - a.createdAt);
+    /* ===========================
+       Load and render episodes
+       =========================== */
+    onValue(episodesRef, snapshot => {
+      container.innerHTML = "";
 
-    episodeList.forEach((ep, index) => {
-      const cleanAudioUrl = ep.audio.replace(/&amp;/g, "&");
+      if (!snapshot.exists()) {
+        container.innerHTML =
+          "<p style='text-align:center;'>No episodes available yet.</p>";
+        return;
+      }
 
-      const card = document.createElement("div");
-      card.className = "episode";
+      const episodesObj = snapshot.val();
 
-      const title = document.createElement("h3");
-      title.textContent = `Episode ${episodeList.length - index}: ${ep.title}`;
+      const episodeList = Object.values(episodesObj)
+        .sort((a, b) => b.createdAt - a.createdAt);
 
-      const date = document.createElement("small");
-      date.textContent = new Date(ep.createdAt).toLocaleDateString();
+      episodeList.forEach((ep, index) => {
+        const cleanAudioUrl = ep.audio.replace(/&amp;/g, "&");
 
-      const description = document.createElement("p");
-      description.textContent = ep.description || "";
+        const card = document.createElement("div");
+        card.className = "episode";
 
-      const audio = document.createElement("audio");
-      audio.controls = true;
-      audio.preload = "metadata";
-      audio.src = cleanAudioUrl;
+        const title = document.createElement("h3");
+        title.textContent =
+          `Episode ${episodeList.length - index}: ${ep.title}`;
 
-      card.appendChild(title);
-      card.appendChild(date);
-      card.appendChild(description);
-      card.appendChild(audio);
+        const date = document.createElement("small");
+        date.textContent =
+          new Date(ep.createdAt).toLocaleDateString();
 
-      container.appendChild(card);
+        const description = document.createElement("p");
+        description.textContent = ep.description || "";
+
+        const audio = document.createElement("audio");
+        audio.controls = true;
+        audio.preload = "metadata";
+        audio.src = cleanAudioUrl;
+
+        card.appendChild(title);
+        card.appendChild(date);
+        card.appendChild(description);
+        card.appendChild(audio);
+
+        container.appendChild(card);
+      });
     });
   });
 </script>
