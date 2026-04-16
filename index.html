@@ -131,15 +131,42 @@
       margin-top: 60px;
     }
   </style>
+  /* Logo fixes */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo {
+  height: 72px;          /* Bigger = clearer */
+  width: auto;
+  background: #ffffff;  /* Contrast against dark header */
+  padding: 6px;
+  border-radius: 10px;
+  object-fit: contain;
+}
+
+.brand-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #F0B429;
+  letter-spacing: 0.5px;
+}
+
 </head>
 
 <body>
 
 <header>
   <div class="brand">
-    <img src="images/logo.png" alt="PAC Radio logo" class="logo">
+    <img src="images/logo.png"
+         alt="PAC Radio logo"
+         class="logo">
     <span class="brand-name">PAC RADIO</span>
   </div>
+</header>
+``
 
   <nav>
     <a href="#listen">Listen</a>
