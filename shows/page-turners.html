@@ -1,171 +1,62 @@
-const SHOW_ID = "page-turners";
-<!-- FORCE DEPLOY 2026-04-13 -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Page Turners | PAC Radio</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="module">
+  const SHOW_ID = "page-turners";
 
-  <style>
-    body {
-      margin: 0;
-      padding: 20px;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f4f4f4;
-      color: #222;
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDkOfitOyXzftyriVlWIplzrMH4FPyCYw0",
+    authDomain: "pac-radio-d838c.firebaseapp.com",
+    databaseURL: "https://pac-radio-d838c-default-rtdb.firebaseio.com",
+    projectId: "pac-radio-d838c"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  const episodesRef = ref(db, `episodes/${SHOW_ID}`);
+  const container = document.getElementById("episodes");
+
+  onValue(episodesRef, snap => {
+    container.innerHTML = "";
+
+    if (!snap.exists()) {
+      container.innerHTML =
+        "<p style='text-align:center;'>No episodes available yet.</p>";
+      return;
     }
 
-    a {
-      text-decoration: none;
-      color: #1C1F2A;
-      font-weight: bold;
-    }
+    const episodesObj = snap.val();
 
-    h1, h2 {
-      text-align: center;
-    }
+    const episodeList = Object.values(episodesObj)
+      .sort((a, b) => b.createdAt - a.createdAt);
 
-    .intro {
-      max-width: 850px;
-      margin: 0 auto 30px;
-      text-align: center;
-    }
+    episodeList.forEach((ep, index) => {
+      const cleanAudioUrl = ep.audio.replace(/&amp;/g, "&");
 
-   .episode {
-  max-width: 850px;
-  margin: 0 auto 20px;
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-  border-left: 6px solid #1C1F2A;
-}
+      const card = document.createElement("div");
+      card.className = "episode";
 
-.episode h3 {
-  margin: 0 0 5px;
-}
+      const title = document.createElement("h3");
+      title.textContent = `Episode ${episodeList.length - index}: ${ep.title}`;
 
-.episode small {
-  color: #666;
-  font-size: 0.85em;
-}
+      const date = document.createElement("small");
+      date.textContent = new Date(ep.createdAt).toLocaleDateString();
 
+      const description = document.createElement("p");
+      description.textContent = ep.description || "";
 
-    audio {
-      width: 100%;
-      margin-top: 10px;
-    }
+      const audio = document.createElement("audio");
+      audio.controls = true;
+      audio.preload = "metadata";
+      audio.src = cleanAudioUrl;
 
-    hr {
-      max-width: 850px;
-      margin: 40px auto;
-    }
-  </style>
-</head>
+      card.appendChild(title);
+      card.appendChild(date);
+      card.appendChild(description);
+      card.appendChild(audio);
 
-<body>
-
-  <a href="../index.html">← Back to Home</a>
-
-  <h1>Page Turners</h1>
-
-  <div class="intro">
-    <p>
-      Legal literacy, civic education, and empowerment.
-      Breaking down rights, laws, and responsibilities in clear language.
-    </p>
-  </div>
-
-  <hr>
-
-  <h2>Episodes</h2>
-  <div id="episodes"></div>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyDkOfitOyXzftyriVlWIplzrMH4FPyCYw0",
-      authDomain: "pac-radio-d838c.firebaseapp.com",
-      databaseURL: "https://pac-radio-d838c-default-rtdb.firebaseio.com",
-      projectId: "pac-radio-d838c"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    const episodesRef = ref(db, `episodes/${SHOW_ID}`);
-    const container = document.getElementById("episodes");
-
-    onValue(episodesRef, snap => {
-      container.innerHTML = "";
-
-      if (!snap.exists()) {
-        container.innerHTML = "<p style='text-align:center;'>No episodes available yet.</p>";
-        return;
-      }
-
-      const episodesObj = snap.val();
-
-/* Convert object → array and sort by newest */
-const episodeList = Object.values(episodesObj)
-  .sort((a, b) => b.createdAt - a.createdAt);
-
-episodeList.forEach((ep, index) => {
-  const cleanAudioUrl = ep.audio.replace(/&amp;/g, "&");
-
-  const card = document.createElement("div");
-  card.className = "episode";
-
-  const title = document.createElement("h3");
-  title.textContent = `Episode ${episodeList.length - index}: ${ep.title}`;
-
-  const date = document.createElement("small");
-  date.textContent = new Date(ep.createdAt).toLocaleDateString();
-
-  const description = document.createElement("p");
-  description.textContent = ep.description || "";
-
-  const audio = document.createElement("audio");
-  audio.controls = true;
-  audio.preload = "metadata";
-  audio.src = cleanAudioUrl;
-
-  card.appendChild(title);
-  card.appendChild(date);
-  card.appendChild(description);
-  card.appendChild(audio);
-
-  container.appendChild(card);
-});
-
-        // ✅ FIX HTML-ENCODED URL
-        const cleanAudioUrl = ep.audio.replace(/&amp;/g, "&");
-
-        const card = document.createElement("div");
-        card.className = "episode";
-
-        const title = document.createElement("h3");
-        title.textContent = ep.title;
-
-        const desc = document.createElement("p");
-        desc.textContent = ep.description || "";
-
-        const audio = document.createElement("audio");
-        audio.controls = true;
-        audio.preload = "metadata";
-        audio.src = cleanAudioUrl;
-
-        card.appendChild(title);
-        card.appendChild(desc);
-        card.appendChild(audio);
-
-        container.prepend(card);
-      }
+      container.appendChild(card);
     });
-  </script>
-
-</body>
-</html>
+  });
+</script>
